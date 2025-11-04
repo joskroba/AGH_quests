@@ -1,0 +1,5 @@
+{
+    "pyhon.analysis.extraPaths":[
+        "${workspaceFolder}/src"
+    ]
+}
