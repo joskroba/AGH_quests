@@ -1,0 +1,1 @@
+jezu nie wiem co ja robię
