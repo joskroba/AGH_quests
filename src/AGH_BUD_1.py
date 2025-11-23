@@ -4,6 +4,30 @@ import numpy as np
 import matplotlib.pyplot as plt
 # from matplotlib.pyplot import cm
 
+#ta klasa jest uywana w innym pliku (cw.3)
+class Material:
+    # n = 0.2 #współczynnik strat dla betonu
+    # d = 2500 #[kg/m3] gęstość betonu
+    # s = 1 #wsp promieniowania dla płyt skończonych pow. częstotliwości koincydencji
+    # c = 343 #[m/s] #v dzwieku w powietrzu
+    # cl = 3800 #[m/s] prędkość fali w betonie
+
+    def __init__(self, gestosc:float, v_fali_mat:float,  w_strat:float, w_prom:float = 1, c:float = 343 ):
+        self.gestosc = gestosc  #[kg/m3] gęstość materiału
+        self.v_fali_mat = v_fali_mat  #[m/s] prędkość fali w  materiale
+        self.w_strat = w_strat #współczynnik strat dla materiału
+        self.w_prom = w_prom #wsp promieniowania dla płyt skończonych pow. częstotliwości koincydencji
+        self.c = c #[m/s] #v dzwieku w powietrzu
+
+    def __str__(self):
+        return ("MATERIAL INFO\n"
+                f"Gęstość = {self.gestosc} [kg/m^3],\n"
+                f"prędkość fali = {self.v_fali_mat} [m/s]\n"
+                f"wsp. strat = {self.w_strat} [-]\n"
+                f"wsp. promieniowania dla płyt = {self.w_prom} [-]\n"
+                f"predkość dźw. w otoczeniu = {self.c} [m/s]\n")
+
+
 n = 0.2 #współczynnik strat dla betonu
 d = 2500 #[kg/m3] gęstość betonu
 h = 0.16 #[m] grubość stropu
@@ -16,17 +40,20 @@ c = 343 #[m/s] #v dzwieku w powietrzu
 cl = 3800 #[m/s] prędkość fali w betonie
 #fc_2 = c**2/(2*np.pi())*np.sqrt(Ms/B) # B to sztywność w zginaniu [Nm]
 
-def poz_dzw_bet(h: float):
-    Ms = d*h #[kg/m2] masa powierzchniowa stropu
-    fc = c**2*np.sqrt(3)/(np.pi*cl*h) # [Hz] freq krytyczna - koincydencji
+Beton = Material(2500, 3800, 0.2) 
+
+#ta funkcja jest uywana w innym pliku cw3
+def poz_dzw_plyta_mat(h: float, mat:Material):
+    Ms = mat.gestosc*h #[kg/m2] masa powierzchniowa stropu
+    fc = mat.c**2*np.sqrt(3)/(np.pi*mat.v_fali_mat*h) # [Hz] freq krytyczna - koincydencji
     wynik = []
     for fi in f:
-        Ln = 10*np.log10(fc/(n*Ms**2)) + 10*np.log10(4*n*fi/(np.pi*fc)+s) + 82.3
+        Ln = 10*np.log10(fc/(mat.w_strat*Ms**2)) + 10*np.log10(4*mat.w_strat*fi/(np.pi*fc)+mat.w_prom) + 82.3
         # print(fi, Ln,  "\n")
         wynik.append(Ln)
     # print(wynik)
     return wynik
-wynik = poz_dzw_bet(0.16)
+wynik = poz_dzw_plyta_mat(0.16, Beton)
 
 def plt_terc(val: np.array):
     freqs = np.array([100,125,160,200,250,315,400,500,630,800,1000,1250,1600,2000,2500,3150])
@@ -114,8 +141,8 @@ plt_terc(korek_3cm)
 
 
 #===================================ZAD 4 ===================================
-strop30 = poz_dzw_bet(0.3)
-strop16 = poz_dzw_bet(0.16)
+strop30 = poz_dzw_plyta_mat(0.3, Beton)
+strop16 = poz_dzw_plyta_mat(0.16, Beton)
 korek_1cm = spadek_poz_korek(0.01)
 
 strop16_wykladzina_3cm = np.subtract(strop16, korek_3cm)
@@ -194,3 +221,4 @@ print("30  ",licz_wazony(strop30, lo))
 print("16  ",licz_wazony(strop16, lo))
 print("16,1  ", licz_wazony(strop16_wykladzina_1cm, lo))
 print("16,3  ", licz_wazony(strop16_wykladzina_3cm, lo))
+del Beton
