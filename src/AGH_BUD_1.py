@@ -28,7 +28,7 @@ class Material:
                 f"predkość dźw. w otoczeniu = {self.c} [m/s]\n")
 
 
-n = 0.2 #współczynnik strat dla betonu
+n = 0.02 #współczynnik strat dla betonu
 d = 2500 #[kg/m3] gęstość betonu
 h = 0.16 #[m] grubość stropu
 
@@ -38,6 +38,8 @@ f = [100,125,160,200,250,315,400,500,630,800,1000,1250,1600,2000,2500,3150] #[Hz
 s = 1 #wsp promieniowania dla płyt skończonych pow. częstotliwości koincydencji
 c = 343 #[m/s] #v dzwieku w powietrzu
 cl = 3800 #[m/s] prędkość fali w betonie
+
+
 #fc_2 = c**2/(2*np.pi())*np.sqrt(Ms/B) # B to sztywność w zginaniu [Nm]
 
 Beton = Material(2500, 3800, 0.2) 
@@ -177,7 +179,10 @@ f = [100,125,160,200,250,315,400,500,630,800,1000,1250,1600,2000,2500,3150] #[Hz
 lw = [67,67.5,68,68.5,69,69.5,70,70.5,71,71.5,72,72,72,72,72,72]
 lo = [62,62,62,62,62,62,61,60,59,58,57,54,51,48,45,42]
 
-def licz_wazony(strop: np.array, odn: np.array):
+def licz_wazony(strop: np.array, odn: np.array = None):
+    if not odn:
+        odn = [62,62,62,62,62,62,61,60,59,58,57,54,51,48,45,42]
+
     if len(strop) != len(odn):
         print("wrong array length - not third octaves")
         return -1

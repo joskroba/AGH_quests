@@ -5,7 +5,7 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-from BUD_AGH_lib import Material , poz_dzw_plyta_mat, plt_terc
+from BUD_AGH_lib import Material , poz_dzw_plyta_mat, plt_terc, licz_wazony
 
 # Fs = 8000
 # f = 5
@@ -73,7 +73,8 @@ Np = 10
 h = 80*pow(10, -3)
 
 
-Beton = Material(2400, 3800, 0.2)
+Beton = Material(2400, 3800, 0.02)
+
 
 
 wynik = zm_poz(h, Beton)
@@ -225,5 +226,8 @@ plt.grid(True, which="both", ls="--", linewidth=0.5, alpha=0.7)
 plt.legend()
 plt.tight_layout()
 plt.show()
+
+print(licz_wazony(strop_mas_30,1))
+print(licz_wazony(efekt_poz_plyw,1))
 
 del Beton

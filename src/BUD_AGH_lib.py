@@ -53,6 +53,49 @@ def plt_terc(val: np.array, title: str):
     plt.tight_layout()
     plt.show()
 
+def licz_wazony(strop: np.array, plot :bool = False, odn: np.array = None):
+    f = np.array([100,125,160,200,250,315,400,500,630,800,1000,1250,1600,2000,2500,3150])
+    if not odn:
+        odn = [62,62,62,62,62,62,61,60,59,58,57,54,51,48,45,42]
+        
+    if len(strop) != len(odn):
+        print("wrong array length - not third octaves")
+        return -1
+    
+    sumator_negatywny = 0
+    reduced = False
+    while(sumator_negatywny < 32):
+        sumator_negatywny = 0
+        for s, o in zip(strop, odn):
+            if(o - s < 0):
+                sumator_negatywny += abs(o-s) 
+                
+        # print("sumator", sumator_negatywny)
+        if(sumator_negatywny > 32 and not reduced):
+            odn = np.add(odn,10)
+            sumator_negatywny = 0
+            # print("too low odn")
+        else:
+            odn = np.subtract(odn,1)
+            reduced = True
+           # print("going lower")
+    odn = np.add(odn,1) #przekroczono próg, zatem krok wstecz
+    if plot:
+        plt.figure(figsize=(10, 6))
+        plt.plot(f, odn, '--', color="#000000", linewidth=2.5, markersize=6,label='odniesienie')
+        plt.plot(f, strop, '-o', color="#e51e74", linewidth=2.5, markersize=6, label='strop')
+        plt.xscale('log')
+        plt.xticks(f, f, rotation=45)
+        plt.xlabel('Częstotliwość [Hz]')
+        plt.ylabel('Poziom dźwięków uderzeniowego [dB]')
+        plt.title('Ilustracja wyznaczenia wskaźnika waonego')
+        plt.grid(True, which="both", ls="--", linewidth=0.5, alpha=0.7)
+        plt.legend()
+        plt.tight_layout()
+        plt.show()
+
+    return odn[7] #return
+
 
 # dupa = 1
 # del dupa
