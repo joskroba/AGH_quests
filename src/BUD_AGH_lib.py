@@ -96,6 +96,7 @@ def licz_wazony(strop: np.array, plot :bool = False, odn: np.array = None):
 
     return odn[7] #return
 
-
+def omega(f: int):
+    return 2*np.pi*f
 # dupa = 1
 # del dupa
