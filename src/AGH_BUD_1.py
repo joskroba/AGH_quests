@@ -2,6 +2,7 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
+from BUD_AGH_lib import plt_terc
 # from matplotlib.pyplot import cm
 
 #ta klasa jest uywana w innym pliku (cw.3)
@@ -57,25 +58,25 @@ def poz_dzw_plyta_mat(h: float, mat:Material):
     return wynik
 wynik = poz_dzw_plyta_mat(0.16, Beton)
 
-def plt_terc(val: np.array):
-    freqs = np.array([100,125,160,200,250,315,400,500,630,800,1000,1250,1600,2000,2500,3150])
+# def plt_terc(val: np.array):
+#     freqs = np.array([100,125,160,200,250,315,400,500,630,800,1000,1250,1600,2000,2500,3150])
 
-    plt.figure(figsize=(10, 6))
-    plt.plot(freqs, val, '-o', color="#1e88e5", linewidth=2.5, markersize=6, label='L_imp')
-    #plt.plot(freqs, reference, '--', color="#d62728", linewidth=2, label='Odniesienie')
-    plt.xscale('log')
-    plt.xticks(freqs, freqs, rotation=45)
-    plt.xlabel('Częstotliwość [Hz]')
-    plt.ylabel('Poziom dźwięku uderzeniowego [dB]')
-    plt.title('Poziomy dźwięków uderzeniowych w pasmach tercjowych – wykres liniowy')
-    plt.grid(True, which="both", ls="--", linewidth=0.5, alpha=0.7)
-    plt.legend()
-    plt.ylim(min(val) - 5,
-            max(val) + 5)
-    plt.tight_layout()
-    plt.show()
+#     plt.figure(figsize=(10, 6))
+#     plt.plot(freqs, val, '-o', color="#1e88e5", linewidth=2.5, markersize=6, label='L_imp')
+#     #plt.plot(freqs, reference, '--', color="#d62728", linewidth=2, label='Odniesienie')
+#     plt.xscale('log')
+#     plt.xticks(freqs, freqs, rotation=45)
+#     plt.xlabel('Częstotliwość [Hz]')
+#     plt.ylabel('Poziom dźwięku uderzeniowego [dB]')
+#     plt.title('Poziomy dźwięków uderzeniowych w pasmach tercjowych')
+#     plt.grid(True, which="both", ls="--", linewidth=0.5, alpha=0.7)
+#     plt.legend()
+#     plt.ylim(min(val) - 5,
+#             max(val) + 5)
+#     plt.tight_layout()
+#     plt.show()
 
-plt_terc(wynik)
+plt_terc(wynik, 'Poziomy dźwięków uderzeniowych w pasmach tercjowych')
 
 # ===========================ZAD 2 ==================================
 Ln = wynik
@@ -87,20 +88,21 @@ h2_tests = [0.08, 0.12, 0.16, 0.20, 0.25, 0.30] #cm
 plt.figure(figsize=(10, 6))
 
 color = iter(plt.cm.rainbow(np.linspace(0, 1, len(h2_tests))))
-
+tab = []
 for hi in h2_tests:
     wynik2 = []
     for li in Ln:
         wynik2.append(li + 30*np.log10(h/hi))
         # print(30*np.log10(h/hi))
     plt.plot(f, wynik2, '-o', color=next(color), linewidth=2.5, markersize=6, label=hi)
+    tab.append(wynik2)
 
 #plt.plot(freqs, reference, '--', color="#d62728", linewidth=2, label='Odniesienie')
 plt.xscale('log')
 plt.xticks(f, f, rotation=45)
 plt.xlabel('Częstotliwość [Hz]')
 plt.ylabel('Poziom dźwięku uderzeniowego [dB]')
-plt.title('Poziomy dźwięków uderzeniowych w pasmach tercjowych – wykres liniowy')
+plt.title('Poziomy dźwięków uderzeniowych w pasmach tercjowych')
 plt.grid(True, which="both", ls="--", linewidth=0.5, alpha=0.7)
 plt.legend()
 plt.tight_layout()
@@ -137,7 +139,7 @@ def spadek_poz_korek(hc: float):
             wynik3.append(20*np.log10(abs(Yc/Yh)))
     return wynik3
 korek_3cm = spadek_poz_korek(0.03)
-plt_terc(korek_3cm)
+plt_terc(korek_3cm, 'Zmniejszenie poziomu uderzeniowego wykładziny 3cm')
 
 
 
@@ -166,7 +168,7 @@ plt.xscale('log')
 plt.xticks(f, f, rotation=45)
 plt.xlabel('Częstotliwość [Hz]')
 plt.ylabel('Poziom dźwięku uderzeniowego [dB]')
-plt.title('Poziomy dźwięków uderzeniowych w pasmach tercjowych – wykres liniowy')
+plt.title('Poziomy dźwięków uderzeniowych w pasmach tercjowych')
 plt.grid(True, which="both", ls="--", linewidth=0.5, alpha=0.7)
 plt.legend()
 plt.tight_layout()
@@ -206,18 +208,18 @@ def licz_wazony(strop: np.array, odn: np.array = None):
            # print("going lower")
     odn = np.add(odn,1) #przekroczono próg, zatem krok wstecz
 
-    plt.figure(figsize=(10, 6))
-    plt.plot(f, odn)
-    plt.plot(f, strop)
-    plt.xscale('log')
-    plt.xticks(f, f, rotation=45)
-    plt.xlabel('Częstotliwość [Hz]')
-    plt.ylabel('Poziom dźwięku uderzeniowego [dB]')
-    plt.title('Poziomy dźwięków uderzeniowych w pasmach tercjowych – wykres liniowy')
-    plt.grid(True, which="both", ls="--", linewidth=0.5, alpha=0.7)
-    plt.legend()
-    plt.tight_layout()
-    plt.show()
+    # plt.figure(figsize=(10, 6))
+    # plt.plot(f, odn)
+    # plt.plot(f, strop)
+    # plt.xscale('log')
+    # plt.xticks(f, f, rotation=45)
+    # plt.xlabel('Częstotliwość [Hz]')
+    # plt.ylabel('Poziom dźwięku uderzeniowego [dB]')
+    # plt.title('Poziomy dźwięków uderzeniowych w pasmach tercjowych')
+    # plt.grid(True, which="both", ls="--", linewidth=0.5, alpha=0.7)
+    # plt.legend()
+    # plt.tight_layout()
+    # plt.show()
 
     return odn[7] #return
         
@@ -227,3 +229,10 @@ print("16  ",licz_wazony(strop16, lo))
 print("16,1  ", licz_wazony(strop16_wykladzina_1cm, lo))
 print("16,3  ", licz_wazony(strop16_wykladzina_3cm, lo))
 del Beton
+
+print("Dane do tabeli\n")
+for t, h in zip(tab,h2_tests):
+    print(f"strop {h}")
+    for tt in t:
+        print(round(tt, 1)) 
+    print("\n")
