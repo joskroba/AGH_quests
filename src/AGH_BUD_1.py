@@ -7,7 +7,7 @@ from BUD_AGH_lib import plt_terc
 
 #ta klasa jest uywana w innym pliku (cw.3)
 class Material:
-    # n = 0.2 #współczynnik strat dla betonu
+    # n = 0.02 #współczynnik strat dla betonu
     # d = 2500 #[kg/m3] gęstość betonu
     # s = 1 #wsp promieniowania dla płyt skończonych pow. częstotliwości koincydencji
     # c = 343 #[m/s] #v dzwieku w powietrzu
@@ -43,7 +43,7 @@ cl = 3800 #[m/s] prędkość fali w betonie
 
 #fc_2 = c**2/(2*np.pi())*np.sqrt(Ms/B) # B to sztywność w zginaniu [Nm]
 
-Beton = Material(2500, 3800, 0.2) 
+Beton = Material(2500, 3800, 0.02) 
 
 #ta funkcja jest uywana w innym pliku cw3
 def poz_dzw_plyta_mat(h: float, mat:Material):
@@ -76,7 +76,8 @@ wynik = poz_dzw_plyta_mat(0.16, Beton)
 #     plt.tight_layout()
 #     plt.show()
 
-plt_terc(wynik, 'Poziomy dźwięków uderzeniowych w pasmach tercjowych')
+plt_terc(wynik, '[zad 1] Poziomy dźwięków uderzeniowych',"/Users/janek/Downloads/out_bud1/zad1_wykres.png")
+#plt.savefig('/Users/janek/Downloads/out_bud1/zad1_wykres.png')
 
 # ===========================ZAD 2 ==================================
 Ln = wynik
@@ -102,11 +103,12 @@ plt.xscale('log')
 plt.xticks(f, f, rotation=45)
 plt.xlabel('Częstotliwość [Hz]')
 plt.ylabel('Poziom dźwięku uderzeniowego [dB]')
-plt.title('Poziomy dźwięków uderzeniowych w pasmach tercjowych')
+plt.title('[zad 2] Poziomy dźwięków uderzeniowych w pasmach tercjowych')
 plt.grid(True, which="both", ls="--", linewidth=0.5, alpha=0.7)
 plt.legend()
 plt.tight_layout()
-plt.show()
+#plt.show()
+plt.savefig('/Users/janek/Downloads/out_bud1/zad2_wykres.png')
 
 
 # =======================================Zad 3 =======================================
@@ -139,8 +141,9 @@ def spadek_poz_korek(hc: float):
             wynik3.append(20*np.log10(abs(Yc/Yh)))
     return wynik3
 korek_3cm = spadek_poz_korek(0.03)
-plt_terc(korek_3cm, 'Zmniejszenie poziomu uderzeniowego wykładziny 3cm')
-
+plt_terc(korek_3cm, '[zad 3] Zmniejszenie poziomu uderzeniowego wykładziny 3cm',
+         "/Users/janek/Downloads/out_bud1/zad3_wykres.png")
+#plt.savefig('/Users/janek/Downloads/out_bud1/zad3_wykres.png')
 
 
 
@@ -168,12 +171,12 @@ plt.xscale('log')
 plt.xticks(f, f, rotation=45)
 plt.xlabel('Częstotliwość [Hz]')
 plt.ylabel('Poziom dźwięku uderzeniowego [dB]')
-plt.title('Poziomy dźwięków uderzeniowych w pasmach tercjowych')
+plt.title('[zad 4] Poziomy dźwięków uderzeniowych w pasmach tercjowych')
 plt.grid(True, which="both", ls="--", linewidth=0.5, alpha=0.7)
 plt.legend()
 plt.tight_layout()
-plt.show()
-
+#plt.show()
+plt.savefig('/Users/janek/Downloads/out_bud1/zad4_wykres.png')
 
 
 # ============================LICZENIE WSKAŹNIKA WAŻONEGO================================
@@ -228,11 +231,12 @@ print("30  ",licz_wazony(strop30, lo))
 print("16  ",licz_wazony(strop16, lo))
 print("16,1  ", licz_wazony(strop16_wykladzina_1cm, lo))
 print("16,3  ", licz_wazony(strop16_wykladzina_3cm, lo))
+#print(Beton)
 del Beton
 
-print("Dane do tabeli\n")
-for t, h in zip(tab,h2_tests):
-    print(f"strop {h}")
-    for tt in t:
-        print(round(tt, 1)) 
-    print("\n")
+# print("Dane do tabeli\n") lol nie pamietam jak to juz dziala
+# for t, h in zip(tab,h2_tests):
+#     print(f"strop {h}")
+#     for tt in t:
+#         print(round(tt, 1)) 
+#     print("\n")

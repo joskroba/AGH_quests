@@ -35,7 +35,7 @@ def poz_dzw_plyta_mat(h: float, mat:Material):
     # print(wynik)
     return wynik
     
-def plt_terc(val: np.array, title: str):
+def plt_terc(val: np.array, title: str, save_path: str):
     freqs = np.array([100,125,160,200,250,315,400,500,630,800,1000,1250,1600,2000,2500,3150])
 
     plt.figure(figsize=(10, 6))
@@ -51,7 +51,10 @@ def plt_terc(val: np.array, title: str):
     plt.ylim(min(val) - 5,
             max(val) + 5)
     plt.tight_layout()
-    plt.show()
+    if save_path:
+        plt.savefig(save_path)
+    else:
+        plt.show()
 
 def licz_wazony(strop: np.array, plot :bool = False, odn: np.array = None):
     f = np.array([100,125,160,200,250,315,400,500,630,800,1000,1250,1600,2000,2500,3150])
