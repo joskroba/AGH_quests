@@ -99,6 +99,12 @@ def licz_wazony(strop: np.array, plot :bool = False, odn: np.array = None):
 
     return odn[7] #return
 
+def waz_spadek(dL):
+    strop_odn = [67,67.5,68,68.5,69,69.5,70,70.5,71,71.5,72,72,72,72,72,72]
+    dd_L = np.subtract(strop_odn, dL)
+    lw = licz_wazony(dd_L)
+    return 78-lw
+
 def omega(f: int):
     return 2*np.pi*f
 # dupa = 1

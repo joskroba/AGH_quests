@@ -50,20 +50,16 @@ def delta_L(f, Ms1, Ms2, rho_m, c_m, d, kd):
             wynik.append(0)
         else:
             wynik.append(delta_L_approx(Z1(fi, Ms1),Zd_mod(fi, fd, rho_m, c_m, d)))
-    return wynik
+    return wynik, f0, fd
 
 # (11)
 def f_0(kd, Ms1, Ms2):
     """Częstotliwość rezonansowa układu [Hz]"""
     return 1 / (2 * np.pi * np.sqrt( kd * (1/Ms1 + 1/Ms2) ))
 
-from BUD_AGH_lib import licz_wazony
+from BUD_AGH_lib import waz_spadek
 
-def waz_spadek(dL):
-    strop_odn = [67,67.5,68,68.5,69,69.5,70,70.5,71,71.5,72,72,72,72,72,72]
-    dd_L = np.subtract(strop_odn, dL)
-    lw = licz_wazony(dd_L)
-    return 78-lw
+
 
 
 # =============================================
@@ -97,11 +93,14 @@ Ms1 = rho_beton * dp
 
 plt.figure(figsize=(10, 6))
 
-color = iter(plt.cm.rainbow(np.linspace(0, 1, len(d_spr_tests))))
+colors = iter(plt.cm.rainbow(np.linspace(0, 1, len(d_spr_tests))))
 tab = []
 for di in d_spr_tests:
-    dL = delta_L(f_terc, Ms1, Ms2, rho_m, c_m, di, kd)
-    plt.plot(f_terc, dL, '-o', color=next(color), linewidth=2.5, markersize=6, label=f"{di}, dLw = {waz_spadek(dL)}")
+    dL, f0, fd = delta_L(f_terc, Ms1, Ms2, rho_m, c_m, di, kd)
+    c = next(colors)
+    plt.plot(f_terc, dL, '-o', color=c, linewidth=2.5, markersize=6, label=f"{di}, dLw = {waz_spadek(dL)}")
+    # plt.axvline(f0, color=c)
+    plt.axvline(fd, color=c)
     # tab.append(wynik2)
 
 #plt.plot(freqs, reference, '--', color="#d62728", linewidth=2, label='Odniesienie')
@@ -109,11 +108,11 @@ plt.xscale('log')
 plt.xticks(f_terc, f_terc, rotation=45)
 plt.xlabel('Częstotliwość [Hz]')
 plt.ylabel('Poziom dźwięku uderzeniowego [dB]')
-plt.title('Poziomy dźwięków uderzeniowych w pasmach tercjowych')
+plt.title('Zmiana grubości warstwy spręzystej - zmniejszenie poz. dzw. uderz. w pasmach tercjowych')
 plt.grid(True, which="both", ls="--", linewidth=0.5, alpha=0.7)
 plt.legend()
 plt.tight_layout()
-plt.show()
+plt.savefig("/Users/janek/Documents/AGH/DZW_BUD/cwp2/wykresy/1_sprez.png")
 
 
 
@@ -123,12 +122,16 @@ d_pod_tests = np.round(np.linspace(0.05, 0.12, 3),3) #cm
 
 plt.figure(figsize=(10, 6))
 
-color = iter(plt.cm.rainbow(np.linspace(0, 1, len(d_spr_tests))))
+colors = iter(plt.cm.rainbow(np.linspace(0, 1, len(d_spr_tests))))
 tab = []
 for dpi in d_pod_tests:
     Msi = rho_beton*dpi
-    dL = delta_L(f_terc, Msi, Ms2, rho_m, c_m, d, kd)
-    plt.plot(f_terc, dL, '-o', color=next(color), linewidth=2.5, markersize=6, label=f"{dpi}, dLw = {waz_spadek(dL)}")
+    dL, f0, fd = delta_L(f_terc, Msi, Ms2, rho_m, c_m, d, kd)
+    c=next(colors)
+    plt.plot(f_terc, dL, '-o', color=c, linewidth=2.5, markersize=6, label=f"{dpi}, dLw = {waz_spadek(dL)}")
+    # plt.axvline(f0, color=c)
+    plt.axvline(fd, color=c)
+
     # tab.append(wynik2)
 
 #plt.plot(freqs, reference, '--', color="#d62728", linewidth=2, label='Odniesienie')
@@ -136,10 +139,10 @@ plt.xscale('log')
 plt.xticks(f_terc, f_terc, rotation=45)
 plt.xlabel('Częstotliwość [Hz]')
 plt.ylabel('Poziom dźwięku uderzeniowego [dB]')
-plt.title('Poziomy dźwięków uderzeniowych w pasmach tercjowych')
+plt.title('Zmiana grubości warstwy podłogi - zmniejszenie poz. dzw. uderz. w pasmach tercjowych')
 plt.grid(True, which="both", ls="--", linewidth=0.5, alpha=0.7)
 plt.legend()
 plt.tight_layout()
-plt.show()
+plt.savefig("/Users/janek/Documents/AGH/DZW_BUD/cwp2/wykresy/2_strop.png")
 
 

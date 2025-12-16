@@ -5,7 +5,7 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-from BUD_AGH_lib import Material , poz_dzw_plyta_mat, plt_terc, licz_wazony
+from BUD_AGH_lib import Material , poz_dzw_plyta_mat, plt_terc, licz_wazony, waz_spadek
 
 # Fs = 8000
 # f = 5
@@ -78,8 +78,8 @@ Beton = Material(2400, 3800, 0.02)
 
 
 wynik = zm_poz(h, Beton)
-plt_terc(wynik, "Zmniejszenie poz. udzerzeniowego")
-
+plt_terc(wynik, "Zmniejszenie poz. udzerzeniowego podłogi pływającej", "/Users/janek/Documents/AGH/DZW_BUD/cwp3/zad1.png")
+print(f"Zad1: {waz_spadek(wynik)}")
 
 #================================ZAD 2 =====================================================
 # Wykorzystując przestawione zależności, sprawdzić, jak gęstość rozmieszczenia elementów
@@ -88,12 +88,15 @@ plt_terc(wynik, "Zmniejszenie poz. udzerzeniowego")
 Np = 1
 print("1 wspornik / m^2")
 wynik_1_wsp = zm_poz(h, Beton)
+print(f"Wazony: {waz_spadek(wynik_1_wsp)}")
 Np = 5
 print("5 wsporników / m^2")
 wynik_5_wsp = zm_poz(h, Beton)
+print(f"Wazony: {waz_spadek(wynik_5_wsp)}")
 Np = 10
 print("10 wsporników / m^2")
 wynik_10_wsp = zm_poz(h, Beton)
+print(f"Wazony: {waz_spadek(wynik_10_wsp)}")
 
 plt.figure(figsize=(10, 6))
 plt.plot(f, wynik_1_wsp, '-o', color="#1e88e5", linewidth=2.5, markersize=6, label='1 wspornik')
@@ -111,7 +114,7 @@ plt.legend()
 
 
 plt.tight_layout()
-plt.show()
+plt.savefig("/Users/janek/Documents/AGH/DZW_BUD/cwp3/zad2.png")
 
 
 #=======================================ZAD 3=============================================
@@ -125,12 +128,15 @@ plt.show()
 kd = 200*pow(10,6)
 print("sztywność 200MN/m^3")
 wynik_s200 = zm_poz(h, Beton)
+print(f"Wazony: {waz_spadek(wynik_s200)}")
 kd = 400*pow(10,6)
 print("sztywność 400MN/m^3")
 wynik_s400 = zm_poz(h, Beton)
+print(f"Wazony: {waz_spadek(wynik_s400)}")
 kd = 600*pow(10,6)
 print("sztywność 600MN/m^3")
 wynik_s600 = zm_poz(h, Beton)
+print(f"Wazony: {waz_spadek(wynik_s600)}")
 
 plt.figure(figsize=(10, 6))
 plt.plot(f, wynik_s200, '-o', color="#1e88e5", linewidth=2.5, markersize=6, label='200MN/m^3')
@@ -148,7 +154,7 @@ plt.legend()
 
 
 plt.tight_layout()
-plt.show()
+plt.savefig("/Users/janek/Documents/AGH/DZW_BUD/cwp3/zad3.png")
 
 #=====================================ZAD 4=====================================================
 # Wykorzystując przestawione zależności, sprawdzić, jak grubość wylewki wpłynie na
@@ -161,14 +167,17 @@ kd = 400*pow(10,6)
 h = 50 * pow(10, -3)
 print("grubość h = 50 mm")
 wynik_h50 = zm_poz(h, Beton)
+print(f"Wazony: {waz_spadek(wynik_h50)}")
 
 h = 80 * pow(10, -3)
 print("grubość h = 80 mm")
 wynik_h80 = zm_poz(h, Beton)
+print(f"Wazony: {waz_spadek(wynik_h80)}")
 
 h = 120 * pow(10, -3)
 print("grubość h = 120 mm")
 wynik_h120 = zm_poz(h, Beton)
+print(f"Wazony: {waz_spadek(wynik_h120)}")
 
 
 plt.figure(figsize=(10, 6))
@@ -185,7 +194,7 @@ plt.grid(True, which="both", ls="--", linewidth=0.5, alpha=0.7)
 plt.legend()
 
 plt.tight_layout()
-plt.show()
+plt.savefig("/Users/janek/Documents/AGH/DZW_BUD/cwp3/zad4.png")
 
 #==========================================zad 5=====================================================
 # Proszę porównać, które rozwiązanie da najlepsze efekty (najniższy znormalizowany poziom
@@ -209,6 +218,7 @@ h = 80*pow(10, -3)
 strop_mas_30 = poz_dzw_plyta_mat(0.30, Beton)
 strop_mas_16 = poz_dzw_plyta_mat(0.16, Beton)
 zm_plyw = zm_poz(h, Beton)
+print(f"spadek wazony plyw.: {waz_spadek(zm_plyw)}")
 
 efekt_poz_plyw = np.subtract(strop_mas_16, zm_plyw)
 freqs = f
@@ -225,9 +235,9 @@ plt.title('Porównanie poz. dzw. ud. stropu masywnego oraz podłogi pływającej
 plt.grid(True, which="both", ls="--", linewidth=0.5, alpha=0.7)
 plt.legend()
 plt.tight_layout()
-plt.show()
+plt.savefig("/Users/janek/Documents/AGH/DZW_BUD/cwp3/zad5.png")
 
-print(licz_wazony(strop_mas_30,1))
-print(licz_wazony(efekt_poz_plyw,1))
+print(licz_wazony(strop_mas_30))
+print(licz_wazony(efekt_poz_plyw))
 
 del Beton
