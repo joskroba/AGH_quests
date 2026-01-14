@@ -465,7 +465,8 @@ strop16 = poz_dzw_plyta_mat(0.16, Beton)
 korek_3cm = spadek_poz_korek(0.03)
 strop16_wykladzina_3cm = np.subtract(strop16, korek_3cm)
 
-print("16,3  ", licz_wazony(strop16_wykladzina_3cm, lo))
+print("L n,w")
+print("16 beton, 3 korek  ", licz_wazony(strop16_wykladzina_3cm, lo))
 
 plt.figure(figsize=(10, 6))
 
