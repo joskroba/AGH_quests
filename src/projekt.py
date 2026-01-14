@@ -82,11 +82,6 @@ print(f"Izolacyjność przegr. wewn systemowej 001/002:  {np.round(R_a1r_prim, 2
 print("proponowany system: 3.41.03, wariant 2x100mm ")
 
 
-###Dla tego pokoju zostało tylko policzyć grubość betonowej wesnętrznej z lab 2 
-# --- komment z 12.01:  ???? ju jest napisana grubość 0.1 wiec nie wiem o co tu chodziło
-                        ##coś gadaliśmy z Matim Gajewskim ze lepiej zgadywać niz wyliczac ale nie pamietam dokladnie
-
-###TODO jeszcze trzeba dla 001 policzyc przegrode zewn. bez okien. berdzie inna grubosc. nie dodajemy poprawki na okno.
 
 print("\n\n--- KONIEC POKOJU 001---\n\n")
 
@@ -121,12 +116,12 @@ S_okien = 1.8*1.95
 R_a2_okna = izol_zewn_ra2(L_zewn, L_wewn, S_okien, a)
 print("\n\n\n")
 print(f"POKOJ DYR 002:\n\
-      Wymagania PN-B-02151-3_2015-10P, TAB 7, p 9.1 (s.38): Laeq_zewn = 35dB dla pom. biurowych\n\
+      Wymagania PN-B-02151-3_2015-10P, TAB 7, p 9.1 (s.38): Laeq_zewn = 35dB dla pom. poufnych\n\
 izolacyjność przegrody pełnej: {R_a2_zelbet}\n\
 izolacyjność przeszklenia: {R_a2_okna}")
 #########################################################################
 
-#####--------GRUBOŚĆ PRZEGRODY PEŁNEJ POK 001--------###
+#####--------GRUBOŚĆ PRZEGRODY PEŁNEJ POK 002--------###
 
 rho_beton = 2400
 masa_pow = np.pow(10,(R_a2_zelbet + 29.6)/30.9)
@@ -136,7 +131,7 @@ print(f"GRUBOSC PRZEGRODY PELNEJ ZEWN. : {np.round(grubosc_beton, 2)} [m]")
 print('#######')
 ########################################################
 
-###---ściana 001 na korytarz
+###---ściana 002 na korytarz
 dlugosc_sciany = 3.15
 # print(dlugosc_sciany)
 wild_guess = 0.14                                                   ######<------check check
@@ -153,22 +148,16 @@ print("Izolacyjnosć drzwi wprost z tabeli = 40dB")
 
 ################################################
 
-#####---sciana 002 do 003(DYR) DO ROZMOW POUFNYCH
+#####---sciana 002(DYR) do 003 DO ROZMOW POUFNYCH
 #3.41.03 R_a1 = 63 dB # ! uwaga wariant 2x100mm wełny
 R_a1 = 63
 R_a1r = R_a1 - 2 # ~~60
 Ka = 9 # strona 117 zalacznik cz. II.3 
 R_a1r_prim = R_a1r - Ka #wczesniej nie było potrzeby nazywania zmiennej z primem, zbyt dluga nazwa
 #poprawka przen. bocz: (STG)
-print(f"Izolacyjność przegr. wewn systemowej 001/002:  {np.round(R_a1r_prim, 2)} dBA, wymaganie 50 - TAB 5., VIII.3.1 (s.26)")
-print("proponowany system: 3.41.03, wariant 2x100mm ")
+print(f"Izolacyjność przegr. wewn systemowej 002/003:  {np.round(R_a1r_prim, 2)} dBA, wymaganie 50 - TAB 5., VIII.3.1 (s.26)")
+print("proponowany system: 3.41.03, wariant 2x100mm - tak samo jak przegroda 001/002 ")
 
-
-###Dla tego pokoju zostało tylko policzyć grubość betonowej wesnętrznej z lab 2 
-# --- komment z 12.01:  ???? ju jest napisana grubość 0.1 wiec nie wiem o co tu chodziło
-                        ##coś gadaliśmy z Matim Gajewskim ze lepiej zgadywać niz wyliczac ale nie pamietam dokladnie
-
-###TODO jeszcze trzeba dla 001 policzyc przegrode zewn. bez okien. berdzie inna grubosc. nie dodajemy poprawki na okno.
 
 print("\n\n--- KONIEC POKOJU DYR 002---\n\n")
 
@@ -237,7 +226,7 @@ print("Izolacyjnosć drzwi wprost z tabeli = 35dB")
 
 ################################################
 
-#####---sciana 005 do 004 KONFERENCYJNA
+#####---sciana 005 KONFERENCYJNA do 004 
 # #3.40.03 AKU
 R_a1 = 54
 R_a1r = R_a1 - 2 
@@ -322,7 +311,7 @@ print("Izolacyjnosć drzwi wprost z tabeli = 30dB")
 ################################################
 
 #####---sciana 003 do 004
-# #3.40.03 AKU
+# #3.40.01
 R_a1 = 42
 R_a1r = R_a1 - 2 
 Ka = 0 # strona 117 zalacznik cz. II.3 
@@ -332,11 +321,6 @@ print(f"Izolacyjność przegr. wewn systemowej 001/002:  {np.round(R_a1r_prim, 2
 print("proponowany system: 3.40.01 15mm ")
 
 
-###Dla tego pokoju zostało tylko policzyć grubość betonowej wesnętrznej z lab 2 
-# --- komment z 12.01:  ???? ju jest napisana grubość 0.1 wiec nie wiem o co tu chodziło
-                        ##coś gadaliśmy z Matim Gajewskim ze lepiej zgadywać niz wyliczac ale nie pamietam dokladnie
-
-###TODO jeszcze trzeba dla 001 policzyc przegrode zewn. bez okien. berdzie inna grubosc. nie dodajemy poprawki na okno.
 
 print("\n\n--- KONIEC pok 003 004---\n\n")
 
@@ -465,8 +449,11 @@ strop16 = poz_dzw_plyta_mat(0.16, Beton)
 korek_3cm = spadek_poz_korek(0.03)
 strop16_wykladzina_3cm = np.subtract(strop16, korek_3cm)
 
-print("L n,w")
-print("16 beton, 3 korek  ", licz_wazony(strop16_wykladzina_3cm, lo))
+
+print("16[cm] beton, 3[cm] wykładzina korkowa:  L_n,w ", licz_wazony(strop16_wykladzina_3cm, lo), "wymaganie <=60 OK")
+print("w załączonym pliku \"cwprojektowe4.py\" oszacowano, ze ten strop spełnia wymaganie 50dB izolacyjności od dźwięków powietrznych")
+
+print("\n Franciszek Wyra oraz Jan Oskroba")
 
 plt.figure(figsize=(10, 6))
 
