@@ -9,7 +9,7 @@ def chlonnoscA(V, T = 0.5):
 
 #ta funkcja realizuje wzór (1) z pdf projekt-wstęp
 def izol_zewn_ra2(Lzew, Lwew_odn, S, A):
-    return Lzew - Lwew_odn - 10* np.log10(S/A) + 3
+    return Lzew - Lwew_odn - 10* np.log10(S/A) + 3 #### tu błąd! ma być +10log...
 
 
 # def izol_agg(Lzew, Lwew_odn, S, V, T, l_scian):
@@ -22,7 +22,7 @@ def izol_zewn_ra2(Lzew, Lwew_odn, S, A):
 h = 3.2 #[m]
 T = 0.5 #[s]
 L_zewn = 70 #dBA
-L_wewn = 32 #dBA
+L_wewn = 32 #dBA ###### TU FAKTYCZNIE BŁAD
 
 V = 13.42 * h
 S_scian_zewn = (5.0+6.7)*h
