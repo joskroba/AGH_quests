@@ -9,7 +9,7 @@ t_span = (0, n_s)
 time = np.linspace(0,n_s,n_s*ticks_per_sec)
 
 # A = 0.2
-phi = np.pi/16
+phi = np.pi/3
 g=9.81
 r = 1
 w = np.sqrt(g/r)
@@ -36,7 +36,7 @@ u_t = 0
 sol_lin = sp.solve_ivp(model_lin, t_span, start, args=(g, r, beta, u_t), t_eval=time)
 sol_nonlin = sp.solve_ivp(model_nonlin, t_span, start, args=(g, r, beta, u_t), t_eval=time)
 
-
+err = np.sqrt(np.abs(sol_nonlin.y[0]**2 - sol_lin.y[0]**2))
 
 plt.figure(figsize=(10, 6))
 
@@ -47,6 +47,8 @@ plt.plot(time, sol_lin.y[0],
          label=f'Model liniowy ($\phi$)', color='green', linewidth=2)
 plt.plot( time, sol_nonlin.y[0],
          label=f'Model nieliniowy ', color='blue', linewidth=2)
+plt.plot( time, err,
+         label=f'err', color='grey', linewidth=1)
 
 plt.title(f'Symulacja ruchu wahadła bez tarć', fontsize=14)
 plt.xlabel('Czas t [s]', fontsize=12)
@@ -55,14 +57,16 @@ plt.grid(True, linestyle=':', alpha=0.6)
 plt.legend()
 plt.axhline(0, color='black', linewidth=1)
 plt.tight_layout()
-plt.show()
+# plt.show()
+plt.savefig("1.png")
 
 peaks_x, _ = find_peaks(sol_nonlin.y[0])
 periods = np.diff(peaks_x)
 T_num = np.mean(periods/ticks_per_sec)
 T_an = np.pi*2/w
-print(f"period numeric equals {T_num} seconds"\
+print(f"period numeric equals {T_num} seconds; "\
       f"period linear equals {T_an} seconds")
+print(f"err względny = {(T_num-T_an)/T_num * 100}%")
 ###########################################################################################
 ###########################################################################################
 ###########################################################################################
@@ -97,15 +101,22 @@ plt.plot( time, plt_obw(time),
          label=f'obwiednia liniowa ', color='black',linestyle="--" , linewidth=2)
 
 
-plt.title(f'Symulacja ruchu wahadła z tarciem wiskotycznym', fontsize=14)
+plt.title(f'Symulacja ruchu wahadła z tłumieniem wiskotycznym', fontsize=14)
 plt.xlabel('Czas t [s]', fontsize=12)
 plt.ylabel('Kąt wychylenia $\phi(t)$ [stopnie]', fontsize=12)
 plt.grid(True, linestyle=':', alpha=0.6)
 plt.legend()
 plt.axhline(0, color='black', linewidth=1)
 plt.tight_layout()
-plt.show()
+# plt.show()
+plt.savefig("2.png")
 
+peaks_x, _ = find_peaks(sol_nonlin.y[0])
+periods = np.diff(peaks_x)
+T_num = np.mean(periods/ticks_per_sec)
+T_an = np.pi*2/w
+print(f"period numeric equals {T_num} seconds; "\
+      f"period linear equals {T_an} seconds - wiskotyczne")
 ###########################################################################################
 ###########################################################################################
 ###########################################################################################
@@ -136,16 +147,25 @@ plt.plot(time, sol_lin.y[0],
          label=f'Model liniowy ($\phi$)', color='green', linewidth=2)
 plt.plot( time, sol_nonlin.y[0],
          label=f'Model nieliniowy ', color='blue', linewidth=2)
-plt.plot( time, plt_obw(time),
-         label=f'obwiednia liniowa ', color='black',linestyle="--" , linewidth=2)
+# plt.plot( time, plt_obw(time),
+        #  label=f'obwiednia liniowa ', color='black',linestyle="--" , linewidth=2)
 
 
-plt.title(f'Symulacja ruchu wahadła z tarciem wiskotycznym', fontsize=14)
+plt.title(f'Symulacja ruchu wahadła z tłumieniem tarciowym', fontsize=14)
 plt.xlabel('Czas t [s]', fontsize=12)
 plt.ylabel('Kąt wychylenia $\phi(t)$ [stopnie]', fontsize=12)
 plt.grid(True, linestyle=':', alpha=0.6)
 plt.legend()
 plt.axhline(0, color='black', linewidth=1)
 plt.tight_layout()
-plt.show()
+# plt.show()
+plt.savefig("3.png")
+
+peaks_x, _ = find_peaks(sol_nonlin.y[0])
+periods = np.diff(peaks_x)
+T_num = np.mean(periods/ticks_per_sec)
+T_an = np.pi*2/w
+print(f"period numeric equals {T_num} seconds; "\
+      f"period linear equals {T_an} seconds - tarciowe")
+print(f"wychylenie początkowe{np.degrees(phi)} stopni")
 

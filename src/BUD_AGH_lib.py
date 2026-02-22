@@ -48,8 +48,9 @@ def plt_terc(val: np.array, title: str, save_path: str):
     plt.title(f'{title} w pasmach tercjowych')
     plt.grid(True, which="both", ls="--", linewidth=0.5, alpha=0.7)
     plt.legend()
-    plt.ylim(min(val) - 5,
-            max(val) + 5)
+    # if(min(val) & max(val) & min(val) != float("-inf") & max(val) != float("inf") ):
+        # plt.ylim(min(val) - 5,
+        #         max(val) + 5)
     plt.tight_layout()
     if save_path:
         plt.savefig(save_path)
