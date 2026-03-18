@@ -152,26 +152,26 @@ K0 = omega(_freqs)/_c0
 #Aby Zmienić model naley podmienic nazwe funkcji Miki() na DB()
 
 # S - W
-Zw, Kw = Miki(_rho0, _c0, _opor_lab, _freqs)
-s_w = SurfaceImp0(Miki_Z, Miki_K, _d3)
+Zw, Kw = Miki(_rho0, _c0, _opor_lab, _freqs)         
+s_w = SurfaceImp0(Miki_Z, Miki_K, _d3)              #bład
 poch_s_w = alfa(R(s_w, _rho0, _c0, _phi0))
 
 # S - P - W
 Zw, Kw = Miki(_rho0, _c0, _opor_lab, _freqs)
 s_p = SurfaceImp0(Z0, K0, _d3)
-s_p_w = SurfaceImpNext(Zw, Kw, _d3, s_p)
+s_p_w = SurfaceImpNext(Zw, Kw, _d3, s_p)             #błąd
 poch_s_p_w = alfa(R(s_p_w, _rho0, _c0, _phi0))
 
 # S - P - P - W
 Zw, Kw = Miki(_rho0, _c0, _opor_lab, _freqs)
-s_p_p = SurfaceImp0(Z0, K0, 2*_d3)
-s_p_p_w = SurfaceImpNext(Zw, Kw, _d3, s_p_p)
+s_p_p = SurfaceImp0(Z0, K0, 2*_d3)                   
+s_p_p_w = SurfaceImpNext(Zw, Kw, _d3, s_p_p)         #błąd
 poch_s_p_p_w = alfa(R(s_p_p_w, _rho0, _c0, _phi0))
 
 
 # S - W - W
 Zw, Kw = Miki(_rho0, _c0, _opor_lab, _freqs)
-s_w_w = SurfaceImp0(Miki_Z, Miki_K, 2*_d3)
+s_w_w = SurfaceImp0(Miki_Z, Miki_K, 2*_d3)            #błąd
 poch_s_w_w = alfa(R(s_w_w, _rho0, _c0, _phi0))
 
 
