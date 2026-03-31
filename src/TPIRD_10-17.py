@@ -113,7 +113,7 @@ plt.plot(_freqs, poch_s_w_w, label = "s-w-w")
 plt.ylim(0,1)
 plt.legend()
 plt.grid()
-plt.show()
+# plt.show()
 
 
 
@@ -139,7 +139,7 @@ plt.plot(_freqs, paris_s_w_w, label = "s-w-w")
 plt.ylim(0,1)
 plt.legend()
 plt.grid()
-plt.show()
+# plt.show()
 
 
 ######################  TABELKA MADNESS #######################
@@ -147,25 +147,59 @@ plt.show()
 import pandas as pd
 
 
+
 # 1. Import macierzy liczb rzeczywistych (ke)
 # Zakładamy, że to pojedyncza kolumna lub prosta macierz
 ke_df = pd.read_csv('src/ke.csv', header=None)
-ke = ke_df.values.flatten()  # Konwersja na jednowymiarową tablicę numpy
+_ke_csv = ke_df.values.flatten()  # Konwersja na jednowymiarową tablicę numpy
 
 # 2. Import macierzy liczb zespolonych (ZFT)
 # Wymaga zamiany 'i' na 'j' przed konwersją na typ zespolony
 zft_df = pd.read_csv('src/ZFT.csv', header=None, dtype=str)
 
 # Funkcja konwertująca format MATLAB 'i' na Python 'j'
-zft = zft_df.applymap(lambda x: complex(str(x).replace('i', 'j'))).values
+_zft_csv = zft_df.map(lambda x: complex(str(x).replace('i', 'j'))).values
 
 # Teraz możesz używać ke i zft w scipy, np.:
 # from scipy import signal
 # result = signal.lfilter(zft[0], [1], some_data)
 
-print(f"Załadowano ke: {ke.shape}")
-print(f"Załadowano ZFT: {zft.shape}")
+print(f"Załadowano ke: {_ke_csv.shape}")
+print(f"Załadowano ZFT: {_zft_csv.shape}")
 
-print( isinstance(ke, np.ndarray))
-print( isinstance(zft, np.ndarray))
+print( isinstance(_ke_csv, np.ndarray))
+print( isinstance(_zft_csv, np.ndarray))
+
+print(_freqs.shape)
+
+
+_a = 3.5 #[m]
+_b = 3.0 #[m]
+e = 2*_a*_b/(_a+_b)
+
+k = omega(_freqs)/_c0
+
+ke = k*e
+print(ke)
+
+from scipy import interpolate as ip
+
+_theta = np.linspace(0, np.pi/2, 7)
+_phi = np.linspace(0, np.pi/2, 91)
+
+
+print(np.degrees(_theta))
+
+interp_ke_spline = ip.make_interp_spline(_ke_csv, _zft_csv, 1)
+Z_interpolated_by_ke = interp_ke_spline(ke)
+
+interp_angle_spline = ip.make_interp_spline(_theta, Z_interpolated_by_ke, 1,axis=1)
+Zr = interp_angle_spline(_phi)
+
+
+# mask_128 = > 128
+i_ke, val_ke = enumerate(ke > 128)
+print(i_ke)
+# print(ke_interpolated.shape)
+
 
