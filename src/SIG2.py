@@ -74,8 +74,8 @@ fs = 4     #% czestotliwosc probkowania w Hz
 tstart = 2  #% czas rozpoczecia sygnalu w sekundach
 tstop = 4  #% czas końca sygnau sygnalu w sekundach
 
-A2 = 2
-f2 = 6
+A2 = -2
+f2 = 1
 
 
 # x2 = mysinT(A1, f1, fs, tstart, tstop)
