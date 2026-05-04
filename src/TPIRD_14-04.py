@@ -9,7 +9,7 @@ _fmaxHz = 20000 #Hz
 _l6 = _c/_fmaxHz/6
 _r0 = 10 #m Odległość źródła dźwięku od próbki
 _r = 5 #m Odległość mikrofonów od próbki
-_freqs = np.arange(100, _fmaxHz+0.01, 2) #Częstotliwość
+_freqs = np.arange(100, _fmaxHz+0.01, 20) #Częstotliwość
 _phi =  np.arange(-1*np.pi/2, np.pi/2+0.01, np.pi/180) # Kąt analizy odbicia fali dźwiękowej
 
 
@@ -57,8 +57,12 @@ class Diffuser:
         self.jestem_plyta = (max_depth == 0)
 
         # Generowanie pozycji wzdłuż osi x (xs)
-        start = -(self._N - 1) / 2 * self._w
-        stop = (self._N + 1) / 2 * self._w
+        if(self._N%2 == 0):
+            start = -1 * self._N / 2 * self._w
+            stop = self._N / 2 * self._w
+        else:
+            start = -(self._N - 1) / 2 * self._w
+            stop = (self._N + 1) / 2 * self._w
         self.xs = np.arange(start, stop, self.l6)
 
         # Mapowanie głębokości na gęstą siatkę x (hx)
@@ -128,6 +132,8 @@ def pressures(dif: Diffuser, formula = 'b'):
     #Dims: (freqs, xs, phis)
     #Rs_3d:(:   , hx(xs), :)
     Rs_3d = Rs[:,:,None]
+
+    print(len(_freqs)*len(dif.xs)*len(_phi))
     
 
     if(formula == 'a'):
@@ -157,10 +163,9 @@ def d_coeff(dif: Diffuser, formula = 'b'):
 def d_coeff_normalised(dif: Diffuser, formula = 'b'):
     d = d_coeff(dif, formula)
 
-    plyta = Diffuser(dif.sn, 0, dif._w)
+    plyta = Diffuser(dif.sn, 0, dif._w)  #TODO mona zoptymalizować - wiele normalizowanych obliczeń w skrypcie wymaga tylko jednokrotnego policzenia płyty - przechować globalnie?
     d_0 =  d_coeff(plyta, formula)
-
-    return (d - d_0) / (1-d_0)
+    return (d - d_0) / (1-d_0), d, d_0
 
 fc_tercje = np.array([100, 125, 160, 200, 250, 315, 400, 500, 630, 800, 
                       1000, 1250, 1600, 2000, 2500, 3150, 4000, 5000])
@@ -194,24 +199,68 @@ myDif.plot()
 
 plyta = Diffuser(sn, 0 , _w)
 plyta.plot()
-ps_approx = pressures(myDif, 'a')
-ps_b = pressures(myDif, 'b')
 
-a = d_coeff_normalised(myDif, 'a')
-b = d_coeff_normalised(myDif, 'b')
+
+a, a_raw, _ = d_coeff_normalised(myDif, 'a')
+b, b_raw, _ = d_coeff_normalised(myDif, 'b')
+dp = d_coeff(plyta, 'b')
 
 
 plt.figure(figsize=(10,6))
+plt.title("Porównanie wzorów, QRD 7")
 plt.plot(_freqs, a, label = "approx")
 plt.plot(_freqs, b,label = "precise")
 plt.legend()
+plt.grid()
 plt.show()
 
 plt.figure(figsize=(10,6))
+plt.title("Porównanie wzorów, QRD 7 - tercjowo")
 plt.semilogx(fc_tercje, to_thirds(a), label = "approx")
 plt.semilogx(fc_tercje, to_thirds(b),label = "precise")
+plt.semilogx(fc_tercje, to_thirds(dp),label = "plyta")
+plt.semilogx(fc_tercje, to_thirds(b_raw),label = "non-normalised")
 plt.legend()
 plt.xticks(fc_tercje,fc_tercje)
+plt.grid()
+plt.show()
+
+plt.figure(figsize=(10,6))
+plt.title("QRD 7 - normalizacja t/n")
+plt.plot(_freqs, b, label = "normalised")
+plt.plot(_freqs, b_raw,label = "raw")
+plt.legend()
+plt.grid()
 plt.show()
 
 print(myDif)
+
+#################################################
+################################################
+#################################################
+################################################
+#################################################
+################################################
+#################################################
+################################################
+
+# nbin = np.array([1,1,1,0,0,0,0,1,0,0,1,0,1,0,1])
+# nbin = np.append(nbin, nbin[::-1])
+# print(nbin)
+# nbinarni_diff = Diffuser(nbin, 0.06, 0.025, 0.30)
+# nbinarni_diff.plot()
+# print(nbinarni_diff)
+
+# a, a_raw = d_coeff_normalised(nbinarni_diff, 'a')
+# b, b_raw = d_coeff_normalised(nbinarni_diff, 'b')
+
+# plt.figure(figsize=(10,6))
+# plt.title("Porównanie wzorów, QRD 7 - tercjowo")
+# plt.semilogx(fc_tercje, to_thirds(a), label = "approx")
+# plt.semilogx(fc_tercje, to_thirds(b),label = "precise")
+# # plt.semilogx(fc_tercje, to_thirds(dp),label = "plyta")
+# plt.semilogx(fc_tercje, to_thirds(b_raw),label = "non-normalised")
+# plt.legend()
+# plt.xticks(fc_tercje,fc_tercje)
+# plt.grid()
+# plt.show()
