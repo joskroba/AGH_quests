@@ -176,7 +176,8 @@ for i, dLi in enumerate(dL):
 print("+ + + + + + + + + + + + ")
 print(f"rezonans: {f0}\n",
     f"odciecia: {fd}\n",
-    f"dla grubosci: {dpi}\n",
+    f"dla grubosci wylewki: {d_wylewki}m\n",
+    f"dla grubosci w. spr.: {d_spr}m\n",
     "===================")
 
 
